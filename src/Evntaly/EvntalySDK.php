@@ -136,10 +136,6 @@ class EvntalySDK
             'pat' => $this->projectToken,
         ];
 
-        $payload = [
-            'data' => $userData
-        ];
-
         try {
             $response = $this->client->post($url, [
                 'headers' => $headers,
