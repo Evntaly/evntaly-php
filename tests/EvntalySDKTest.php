@@ -11,7 +11,6 @@ class EvntalySDKTest extends TestCase
     {
         // Use your real Evntaly credentials here
         $this->sdk = new EvntalySDK('YOUR_DEVELOPER_SECRET', 'YOUR_PROJECT_TOKEN');
-
     }
 
     public function testTrackEvent()
