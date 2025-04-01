@@ -8,14 +8,9 @@
   An advanced event tracking and analytics platform designed to help developers capture, analyze, and react to user interactions efficiently.
 </p>
 
-<p align="center">
-  <!-- PHP Badges - Ensure the package name 'evntaly/evntaly-php' is correct on Packagist -->
-  <a href="https://packagist.org/packages/evntaly/evntaly-php"><img src="https://img.shields.io/packagist/v/evntaly/evntaly-php.svg?style=flat-square" alt="Latest Stable Version"></a>
-  <a href="https://packagist.org/packages/evntaly/evntaly-php"><img src="https://img.shields.io/packagist/dt/evntaly/evntaly-php.svg?style=flat-square" alt="Total Downloads"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/packagist/l/evntaly/evntaly-php.svg?style=flat-square" alt="License"></a>
-  <!-- Add other badges like build status, code coverage etc. if available -->
-  <!-- Example: <a href="#"><img src="https://img.shields.io/travis/your-github-username/evntaly-php.svg?style=flat-square" alt="Build Status"></a> -->
-</p>
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/evntaly/evntaly-php.svg?style=flat-square)](https://packagist.org/packages/evntaly/evntaly-php)
+[![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Total Downloads](https://img.shields.io/packagist/dt/evntaly/evntaly-php.svg?style=flat-square)](https://packagist.org/packages/evntaly/evntaly-php)
 
 # evntaly-php
 
