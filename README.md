@@ -16,6 +16,8 @@
 
 **evntaly-php** is a PHP client for interacting with the Evntaly event tracking platform.t provides developers with a straightforward interface to initialize the SDK, track events, identify users, manage tracking states, and potentially interact with other Evntaly API features within PHP applications.
 
+The full documentation can be found at [Evntaly Documentation](https://evntaly.gitbook.io/evntaly)
+
 ## Features
 
 -   **Initialize** the SDK with a developer secret and project token.
