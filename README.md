@@ -40,13 +40,13 @@ First, include the Composer autoloader in your project. Then, initialize the SDK
 // Include Composer's autoloader
 require 'vendor/autoload.php';
 
-use Evntaly\SDK;
+use Evntaly\EvntalySDK;
 
 // Replace with your actual credentials
 $developerSecret = 'YOUR_DEVELOPER_SECRET';
 $projectToken = 'YOUR_PROJECT_TOKEN';
 
-$sdk = new SDK($developerSecret, $projectToken);
+$sdk = new EvntalySDK($developerSecret, $projectToken);
 ```
 
 ---
