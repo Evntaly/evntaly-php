@@ -74,10 +74,10 @@ class EvntalySDK
                 return false; // Default behavior if key is missing
             }
 
-            return !$data['limitReached']; // Return true if limit is NOT reached
+            return !$data['limitReached']; 
         } catch (Exception | GuzzleException $e) {
             error_log("Error checking limit: " . $e->getMessage());
-            return false; // Fails safe (assumes limit is reached)
+            return false; 
         }
     }
 
@@ -113,7 +113,7 @@ class EvntalySDK
             ]);
 
             $responseData = json_decode($response->getBody()->getContents(), true);
-            error_log("Track event response: " . json_encode($responseData));
+            echo "Track event response: " . json_encode($responseData);
             return true;
         } catch (Exception | GuzzleException $e) {
             error_log("Track event error: " . $e->getMessage());
@@ -143,7 +143,7 @@ class EvntalySDK
             ]);
 
             $responseData = json_decode($response->getBody()->getContents(), true);
-            error_log("Identify user response: " . json_encode($responseData));
+            echo "Identify user response: " . json_encode($responseData);
             return true;
         } catch (Exception | GuzzleException $e) {
             error_log("Identify user error: " . $e->getMessage());
@@ -159,7 +159,7 @@ class EvntalySDK
     public function disableTracking(): void
     {
         $this->trackingEnabled = false;
-        error_log("Tracking disabled.");
+        echo "Tracking disabled.";
     }
 
     /**
@@ -170,6 +170,6 @@ class EvntalySDK
     public function enableTracking(): void
     {
         $this->trackingEnabled = true;
-        error_log("Tracking enabled.");
+        echo "Tracking enabled.";
     }
 }
