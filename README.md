@@ -20,10 +20,10 @@ The full documentation can be found at [Evntaly Documentation](https://evntaly.g
 
 ## Features
 
--   **Initialize** the SDK with a developer secret and project token.
--   **Track events** with comprehensive metadata and tags.
--   **Identify users** for personalization and detailed analytics.
--   **Enable or disable** tracking globally within your application instance.
+- **Initialize** the SDK with a developer secret and project token.
+- **Track events** with comprehensive metadata and tags.
+- **Identify users** for personalization and detailed analytics.
+- **Enable or disable** tracking globally within your application instance.
 
 ## Installation
 
@@ -32,6 +32,7 @@ Install the SDK using [Composer](https://getcomposer.org/):
 ```bash
 composer require evntaly/evntaly-php
 ```
+
 ## Usage
 
 ### Initialization
@@ -41,7 +42,6 @@ First, include the Composer autoloader in your project. Then, initialize the SDK
 ```php
 use Evntaly\EvntalySDK;
 
-// Replace with your actual credentials
 $developerSecret = 'YOUR_DEVELOPER_SECRET';
 $projectToken = 'YOUR_PROJECT_TOKEN';
 
@@ -51,6 +51,7 @@ $sdk = new EvntalySDK($developerSecret, $projectToken);
 ---
 
 ### Tracking Events
+
 To track an event, use the `track` method with an associative array containing the event details.
 
 ```php
@@ -59,54 +60,51 @@ $response = $sdk->track([
     "description" => "User completed a purchase successfully",
     "message" => "Order #12345 confirmed for user.",
     "data" => [
-        "user_id" => "usr_67890", // Consistent User ID
+        "user_id" => "usr_67890",
         "order_id" => "12345",
         "amount" => 99.99,
         "currency" => "USD",
         "payment_method" => "credit_card",
-        "timestamp" => date('c'), // ISO 8601 format timestamp
+        "timestamp" => date('c'),
         "referrer" => "social_media",
         "email_verified" => true
     ],
     "tags" => ["purchase", "payment", "usd", "checkout-v2"],
-    "notify" => true,          // Send notification based on project rules
-    "icon" => "💰",            // Icon for the event feed
-    "apply_rule_only" => false, // Process normally (false) or only apply rules (true)
-    "user" => ["id" => "usr_0f6934fd-99c0-41ca-84f4"], // Associate with a specific user ID
-    "type" => "Transaction",   // Categorize the event
-    "sessionID" => "sid_20750ebc-dabf-4fd4-9498", // Optional session identifier
-    "feature" => "Checkout",   // Relate event to a specific feature
-    "topic" => "@Sales"        // Optional topic for routing/filtering
+    "notify" => true,
+    "icon" => "💰",
+    "apply_rule_only" => false,
+    "user" => ["id" => "usr_0f6934fd-99c0-41ca-84f4"],
+    "type" => "Transaction",
+    "sessionID" => "sid_20750ebc-dabf-4fd4-9498",
+    "feature" => "Checkout",
+    "topic" => "@Sales"
 ]);
 ```
 
 ---
 
 ### Identifying Users
+
 To identify or update user details, use the `identifyUser` method. This helps link events to specific users and enriches your analytics.
 
 ```php
 $response = $sdk->identifyUser([
-    "id" => "usr_0f6934fd-99c0-41ca-84f4", // **Required:** Unique user identifier
+    "id" => "usr_0f6934fd-99c0-41ca-84f4",
     "email" => "john.doe@example.com",
     "full_name" => "Johnathan Doe",
     "organization" => "ExampleCorp Inc.",
     "data" => [
-        // Custom user attributes
         "username" => "JohnD",
         "location" => "New York, USA",
         "plan_type" => "Premium",
         "signup_date" => "2024-01-15T10:00:00Z",
         "timezone" => "America/New_York"
-        // Add any relevant user data
     ]
 ]);
 
 ```
 
 ---
-
-### Enabling/Disabling Tracking
 
 ### Enabling/Disabling Tracking
 
@@ -129,5 +127,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 **Note:** Always replace `'YOUR_DEVELOPER_SECRET'` and `'YOUR_PROJECT_TOKEN'` with your actual credentials provided by Evntaly. Keep your Developer Secret confidential.
-
-
