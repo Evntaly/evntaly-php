@@ -6,6 +6,7 @@
 
 <p align="center">
   An advanced event tracking and analytics platform designed to help developers capture, analyze, and react to user interactions efficiently.
+  The full documentation can be found at [Evntaly Documentation](https://evntaly.gitbook.io/evntaly)
 </p>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/evntaly/evntaly-php.svg?style=flat-square)](https://packagist.org/packages/evntaly/evntaly-php)
@@ -14,9 +15,7 @@
 
 # evntaly-php
 
-**evntaly-php** is a PHP client for interacting with the Evntaly event tracking platform.t provides developers with a straightforward interface to initialize the SDK, track events, identify users, manage tracking states, and potentially interact with other Evntaly API features within PHP applications.
-
-The full documentation can be found at [Evntaly Documentation](https://evntaly.gitbook.io/evntaly)
+**evntaly-php** is a PHP client for interacting with the Evntaly event tracking platform. It provides developers with a straightforward interface to initialize the SDK, track events, identify users, manage tracking states, and potentially interact with other Evntaly API features within PHP applications.
 
 ## Features
 
