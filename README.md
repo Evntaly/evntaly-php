@@ -6,7 +6,10 @@
 
 <p align="center">
   An advanced event tracking and analytics platform designed to help developers capture, analyze, and react to user interactions efficiently.
-  The full documentation can be found at [Evntaly Documentation](https://evntaly.gitbook.io/evntaly)
+</p>
+
+<p align="center">
+  The full documentation can be found at <a href="https://evntaly.gitbook.io/evntaly">Evntaly Documentation</a>
 </p>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/evntaly/evntaly-php.svg?style=flat-square)](https://packagist.org/packages/evntaly/evntaly-php)
