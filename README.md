@@ -128,4 +128,20 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
+## Contributors
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Mohamed-Kamal-Ayad">
+        <img src="https://avatars.githubusercontent.com/Mohamed-Kamal-Ayad" width="80px" alt="Mohamed Kamal Ayad"/>
+        <br />
+        <sub><b>Mohamed Kamal Ayad</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
+---
+
 **Note:** Always replace `'YOUR_DEVELOPER_SECRET'` and `'YOUR_PROJECT_TOKEN'` with your actual credentials provided by Evntaly. Keep your Developer Secret confidential.
