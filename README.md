@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  The full documentation can be found at <a href="https://evntaly.gitbook.io/evntaly">Evntaly Documentation</a>
+  The full documentation can be found at <a href="https://evntaly.gitbook.io/evntaly/getting-started">Evntaly Documentation</a>
 </p>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/evntaly/evntaly-php.svg?style=flat-square)](https://packagist.org/packages/evntaly/evntaly-php)
