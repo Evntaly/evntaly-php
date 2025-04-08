@@ -130,17 +130,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ### Contributors
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/Mohamed-Kamal-Ayad">
-        <img src="https://avatars.githubusercontent.com/Mohamed-Kamal-Ayad" width="80px" style="border-radius: 50%;" alt="Mohamed Kamal Ayad"/>
-        <br />
-        <sub><b>Mohamed Kamal Ayad</b></sub>
-      </a>
-    </td>
-  </tr>
-</table>
+[![Mohamed Kamal Ayad](https://img.shields.io/badge/-Mohamed--Kamal--Ayad-black?style=flat-square&logo=github&logoColor=white&labelColor=181717)](https://github.com/Mohamed-Kamal-Ayad)
 
 ---
 
