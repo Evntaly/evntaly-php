@@ -128,19 +128,13 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-## Contributors
+### Contributors
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/Mohamed-Kamal-Ayad">
-        <img src="https://avatars.githubusercontent.com/Mohamed-Kamal-Ayad" width="80px" alt="Mohamed Kamal Ayad"/>
-        <br />
-        <sub><b>Mohamed Kamal</b></sub>
-      </a>
-    </td>
-  </tr>
-</table>
+<a href="https://github.com/Mohamed-Kamal-Ayad">
+  <img src="https://avatars.githubusercontent.com/Mohamed-Kamal-Ayad" width="80px" style="border-radius: 50%;" alt="Mohamed Kamal Ayad"/>
+  <br />
+  <sub><b>Mohamed Kamal Ayad</b></sub>
+</a>
 
 ---
 
