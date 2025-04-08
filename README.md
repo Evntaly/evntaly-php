@@ -50,8 +50,6 @@ $projectToken = 'YOUR_PROJECT_TOKEN';
 $sdk = new EvntalySDK($developerSecret, $projectToken);
 ```
 
----
-
 ### Tracking Events
 
 To track an event, use the `track` method with an associative array containing the event details.
@@ -83,8 +81,6 @@ $response = $sdk->track([
 ]);
 ```
 
----
-
 ### Identifying Users
 
 To identify or update user details, use the `identifyUser` method. This helps link events to specific users and enriches your analytics.
@@ -106,8 +102,6 @@ $response = $sdk->identifyUser([
 
 ```
 
----
-
 ### Enabling/Disabling Tracking
 
 You can globally enable or disable event tracking for the current SDK instance. This might be useful for development/testing or respecting user consent.
@@ -120,15 +114,15 @@ $sdk->disableTracking();
 $sdk->enableTracking();
 ```
 
----
+## Contributing
 
-### License
+Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+
+## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
-
-### Contributors
+## Contributors
 
 [![Mohamed Kamal Ayad](https://img.shields.io/badge/-Mohamed--Kamal--Ayad-black?style=flat-square&logo=github&logoColor=white&labelColor=181717)](https://github.com/Mohamed-Kamal-Ayad)
 
