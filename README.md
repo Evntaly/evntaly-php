@@ -39,7 +39,7 @@ composer require evntaly/evntaly-php
 
 ### Initialization
 
-First, include the Composer autoloader in your project. Then, initialize the SDK with your developer secret and project token obtained from your Evntaly dashboard.
+First, include the Composer autoloader in your project. Then, initialize the SDK with your developer secret and project token obtained from your [Evntaly dashboard](https://app.evntaly.com/account/settings/api).
 
 ```php
 use Evntaly\EvntalySDK;
