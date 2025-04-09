@@ -1,0 +1,188 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Payment Event Schema",
+  "description": "Schema for validating payment-related events",
+  "type": "object",
+  "required": ["title", "type", "data"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The title of the payment event"
+    },
+    "description": {
+      "type": "string",
+      "description": "A detailed description of the payment event"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["Payment", "Transaction", "Checkout", "Refund", "Subscription"],
+      "description": "The specific type of payment event"
+    },
+    "feature": {
+      "type": "string",
+      "description": "The feature or area of the application this payment relates to"
+    },
+    "data": {
+      "type": "object",
+      "required": ["amount", "currency", "status"],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "minimum": 0,
+          "description": "The payment amount"
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3,
+          "description": "The three-letter currency code (ISO 4217)"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "completed", "failed", "refunded", "cancelled"],
+          "description": "The status of the payment"
+        },
+        "payment_method": {
+          "type": "string",
+          "description": "The method of payment (credit_card, paypal, etc.)"
+        },
+        "transaction_id": {
+          "type": "string",
+          "description": "The unique identifier for this transaction"
+        },
+        "order_id": {
+          "type": "string",
+          "description": "The associated order identifier"
+        },
+        "customer_id": {
+          "type": "string",
+          "description": "The identifier of the customer making the payment"
+        },
+        "payment_details": {
+          "type": "object",
+          "description": "Additional payment method details",
+          "properties": {
+            "card_type": {
+              "type": "string",
+              "description": "Type of card used (Visa, Mastercard, etc.)"
+            },
+            "last_four": {
+              "type": "string",
+              "pattern": "^[0-9]{4}$",
+              "description": "Last four digits of the payment card"
+            },
+            "expiry_month": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12,
+              "description": "Card expiration month"
+            },
+            "expiry_year": {
+              "type": "integer",
+              "minimum": 2000,
+              "description": "Card expiration year"
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "description": "Items included in this payment",
+          "items": {
+            "type": "object",
+            "required": ["name", "price"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the item"
+              },
+              "price": {
+                "type": "number",
+                "description": "Price of the item"
+              },
+              "quantity": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Quantity of this item"
+              },
+              "sku": {
+                "type": "string",
+                "description": "Stock keeping unit (SKU)"
+              }
+            }
+          }
+        },
+        "billing_address": {
+          "type": "object",
+          "description": "Billing address information",
+          "properties": {
+            "street": { "type": "string" },
+            "city": { "type": "string" },
+            "state": { "type": "string" },
+            "postal_code": { "type": "string" },
+            "country": { "type": "string" }
+          }
+        },
+        "shipping_address": {
+          "type": "object",
+          "description": "Shipping address information",
+          "properties": {
+            "street": { "type": "string" },
+            "city": { "type": "string" },
+            "state": { "type": "string" },
+            "postal_code": { "type": "string" },
+            "country": { "type": "string" }
+          }
+        },
+        "taxes": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Tax amount applied to this payment"
+        },
+        "discount": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Discount amount applied to this payment"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about this payment"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "Custom metadata associated with this payment",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "tags": {
+      "type": "array",
+      "description": "Tags for categorizing the payment event",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notify": {
+      "type": "boolean",
+      "description": "Whether notifications should be sent for this payment event"
+    },
+    "icon": {
+      "type": "string",
+      "description": "Icon to display with the payment event"
+    },
+    "timestamp": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "description": "Unix timestamp (seconds since epoch)"
+        },
+        {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 formatted date-time string"
+        }
+      ]
+    }
+  },
+  "additionalProperties": true
+} 
