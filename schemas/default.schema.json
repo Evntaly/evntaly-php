@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Default Event Schema",
+  "description": "Default schema for validating Evntaly events",
+  "type": "object",
+  "required": ["title"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The title of the event"
+    },
+    "description": {
+      "type": "string",
+      "description": "A detailed description of the event"
+    },
+    "type": {
+      "type": "string",
+      "description": "The type/category of the event"
+    },
+    "feature": {
+      "type": "string",
+      "description": "The feature or area of the application this event relates to"
+    },
+    "data": {
+      "type": "object",
+      "description": "Additional data associated with the event",
+      "additionalProperties": true
+    },
+    "tags": {
+      "type": "array",
+      "description": "Tags for categorizing the event",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notify": {
+      "type": "boolean",
+      "description": "Whether notifications should be sent for this event"
+    },
+    "icon": {
+      "type": "string",
+      "description": "Icon to display with the event"
+    },
+    "sessionID": {
+      "type": "string",
+      "description": "Unique session identifier"
+    },
+    "user": {
+      "type": "object",
+      "description": "User information related to this event",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "User identifier"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address"
+        },
+        "name": {
+          "type": "string",
+          "description": "User name"
+        }
+      }
+    },
+    "timestamp": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "description": "Unix timestamp (seconds since epoch)"
+        },
+        {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 formatted date-time string"
+        }
+      ]
+    },
+    "topic": {
+      "type": "string",
+      "description": "Topic or channel for the event"
+    },
+    "pinned": {
+      "type": "boolean",
+      "description": "Whether the event should be pinned in the UI"
+    }
+  },
+  "additionalProperties": true
+} 
