@@ -1,0 +1,26 @@
+services:
+    evntaly.sdk:
+        class: Evntaly\EvntalySDK
+        arguments:
+            - '%evntaly.developer_secret%'
+            - '%evntaly.project_token%'
+            - 
+                verboseLogging: '%evntaly.verbose_logging%'
+                maxBatchSize: '%evntaly.max_batch_size%'
+                autoContext: '%evntaly.auto_context%'
+                sampling: '%evntaly.sampling%'
+                trackPerformance: '%evntaly.track_performance%'
+                autoTrackPerformance: '%evntaly.auto_track_performance%'
+                performanceThresholds: '%evntaly.performance_thresholds%'
+                webhookSecret: '%evntaly.webhook_secret%'
+                realtime:
+                    enabled: '%evntaly.realtime_enabled%'
+                    serverUrl: '%evntaly.realtime_server%'
+
+    evntaly.event_subscriber:
+        class: Evntaly\Integration\Symfony\EventSubscriber
+        arguments: ['@evntaly.sdk', '%evntaly%']
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Evntaly\EvntalySDK: '@evntaly.sdk'

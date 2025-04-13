@@ -1,0 +1,10 @@
+parameters:
+    level: 5
+    paths:
+        - src
+    # Remove deprecated option and replace with proper ignoreErrors
+    ignoreErrors:
+        -
+            identifier: missingType.iterableValue
+    # Increase memory limit
+    memoryLimit: 512M
