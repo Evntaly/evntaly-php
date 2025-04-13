@@ -2,43 +2,84 @@
   <img src="https://cdn.evntaly.com/Resources/og.png" alt="Evntaly Cover" width="100%">
 </p>
 
-<h1 align="center">Evntaly</h1>
+<h1 align="center">Evntaly PHP SDK</h1>
 
 <p align="center">
   An advanced event tracking and analytics platform designed to help developers capture, analyze, and react to user interactions efficiently.
 </p>
 
 <p align="center">
-  The full documentation can be found at <a href="https://evntaly.gitbook.io/evntaly/getting-started">Evntaly Documentation</a>
+  <a href="https://packagist.org/packages/evntaly/evntaly-php"><img src="https://img.shields.io/packagist/v/evntaly/evntaly-php.svg?style=flat-square" alt="Latest Version on Packagist"></a>
+  <a href="LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="MIT Licensed"></a>
+  <a href="https://packagist.org/packages/evntaly/evntaly-php"><img src="https://img.shields.io/packagist/dt/evntaly/evntaly-php.svg?style=flat-square" alt="Total Downloads"></a>
 </p>
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/evntaly/evntaly-php.svg?style=flat-square)](https://packagist.org/packages/evntaly/evntaly-php)
-[![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Total Downloads](https://img.shields.io/packagist/dt/evntaly/evntaly-php.svg?style=flat-square)](https://packagist.org/packages/evntaly/evntaly-php)
+<p align="center">
+  <a href="https://evntaly.gitbook.io/evntaly/getting-started">Full Documentation</a> |
+  <a href="#installation">Installation</a> |
+  <a href="#basic-usage">Basic Usage</a> |
+  <a href="#advanced-features">Advanced Features</a>
+</p>
 
-# evntaly-php
+---
 
-**evntaly-php** is a PHP client for interacting with the Evntaly event tracking platform. It provides developers with a straightforward interface to initialize the SDK, track events, identify users, manage tracking states, and potentially interact with other Evntaly API features within PHP applications.
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Basic Usage](#basic-usage)
+  - [Initialization](#initialization)
+  - [Tracking Events](#tracking-events)
+  - [User Identification](#user-identification)
+  - [Configuration Options](#configuration-options)
+- [Core Features](#core-features)
+  - [Batch Processing](#batch-processing)
+  - [Markable Events](#markable-events)
+  - [Spotlight Events](#spotlight-events)
+  - [Timed Events](#timed-events)
+  - [Error Handling](#error-handling)
+- [Advanced Features](#advanced-features)
+  - [Context Awareness](#context-awareness)
+  - [Sampling Capabilities](#sampling-capabilities)
+  - [Performance Tracking](#performance-tracking)
+  - [Asynchronous Processing](#asynchronous-processing)
+  - [Data Export & Import](#data-export--import)
+  - [Webhooks & Realtime Updates](#webhooks--realtime-updates)
+  - [Auto-instrumentation](#auto-instrumentation)
+  - [GraphQL Tracking](#graphql-tracking)
+  - [Middleware System](#middleware-system)
+  - [Field-level Encryption](#field-level-encryption)
+  - [OpenTelemetry Integration](#opentelemetry-integration)
+  - [Persistent Storage](#persistent-storage)
+- [Framework Integrations](#framework-integrations)
+  - [Laravel Integration](#laravel-integration)
+  - [Symfony Integration](#symfony-integration)
+- [Testing](#testing)
+  - [Unit Testing](#unit-testing)
+  - [Integration Testing](#integration-testing)
+- [Configuration Reference](#configuration-reference)
+- [Contributors](#contributors)
+- [License](#license)
 
 ## Features
 
-- **Initialize** the SDK with a developer secret and project token.
-- **Track events** with comprehensive metadata and tags.
-- **Batch processing** for efficiently sending multiple events at once.
-- **Identify users** for personalization and detailed analytics.
-- **Enable or disable** tracking globally within your application instance.
-- **Automatic retries** for failed requests with configurable retry policies.
-- **Flexible configuration** options for customizing SDK behavior.
-- **Data validation** to ensure proper event and user data formatting.
-- **Utility helpers** for generating IDs, structuring events, and more.
-- **GraphQL tracking** for monitoring GraphQL operations.
-- **Markable events** for categorizing, filtering, and retrieving related events.
-- **Spotlight events** for creating highly visible, attention-grabbing events with priority levels.
-- **Persistent storage** to save and load marked events between sessions.
-- **Timed events** for creating events that can automatically expire after a specified duration.
-- **Middleware system** for intercepting, transforming, and extending event tracking functionality.
-- **JSON Schema validation** for enforcing event structure and maintaining data quality.
-- **Field-level encryption** for protecting sensitive data while maintaining searchability.
+- **Event Tracking** - Track any user interaction or system event with rich metadata
+- **User Identification** - Link events to specific users for personalized analytics
+- **Batch Processing** - Efficiently send multiple events in a single request
+- **Markable Events** - Categorize events with custom markers for better organization
+- **Spotlight Events** - Create attention-grabbing events with priority levels
+- **Context Awareness** - Automatically collect environment and correlation data
+- **Sampling Capabilities** - Intelligently control the volume of events you track
+- **Performance Tracking** - Monitor application performance with detailed metrics
+- **Asynchronous Processing** - Process events in the background with Amp/React
+- **Data Export & Import** - Export events to various formats or import from other platforms
+- **Webhooks & Realtime** - Process webhooks and receive real-time updates via WebSockets
+- **Auto-instrumentation** - Automatically track framework-specific events without manual code
+- **GraphQL Tracking** - Monitor and analyze GraphQL operations
+- **Field-level Encryption** - Securely protect sensitive data fields
+- **OpenTelemetry Integration** - Bridge to OpenTelemetry for distributed tracing
+- **Persistent Storage** - Save and load marked events between sessions
+- **Framework Integrations** - Native support for Laravel and Symfony
 
 ## Installation
 
@@ -48,34 +89,46 @@ Install the SDK using [Composer](https://getcomposer.org/):
 composer require evntaly/evntaly-php
 ```
 
-## Usage
+For optional features, install additional dependencies:
+
+```bash
+# For WebSocket support
+composer require ratchet/pawl
+
+# For asynchronous processing
+composer require react/async react/promise react/event-loop
+
+# For CSV export/import
+composer require league/csv
+
+# For OpenTelemetry integration
+composer require open-telemetry/opentelemetry-api
+```
+
+## Basic Usage
 
 ### Initialization
-
-First, include the Composer autoloader in your project. Then, initialize the SDK with your developer secret and project token obtained from your [Evntaly dashboard](https://app.evntaly.com/account/settings/api).
 
 ```php
 use Evntaly\EvntalySDK;
 
+// Basic initialization
 $developerSecret = 'dev_c8a4d2e1f36b90';
 $projectToken = 'proj_a7b9c3d2e5f14';
-
-// Basic initialization
 $sdk = new EvntalySDK($developerSecret, $projectToken);
 
 // Advanced initialization with options
 $sdk = new EvntalySDK($developerSecret, $projectToken, [
     'maxBatchSize' => 20,             // Set max events in a batch (default: 10)
-    'verboseLogging' => true,         // Enable detailed logging (default: true)
+    'verboseLogging' => true,         // Enable detailed logging (default: false)
     'maxRetries' => 5,                // Set max request retries (default: 3)
     'baseUrl' => 'https://custom.evntaly.com', // Use custom endpoint (optional)
     'validateData' => true,           // Enable data validation (default: true)
+    'timeout' => 15,                  // HTTP request timeout in seconds (default: 10)
 ]);
 ```
 
 ### Tracking Events
-
-To track an individual event, use the `track` method with an associative array containing the event details.
 
 ```php
 $response = $sdk->track([
@@ -88,32 +141,75 @@ $response = $sdk->track([
         "amount" => 99.99,
         "currency" => "USD",
         "payment_method" => "credit_card",
-        "timestamp" => date('c'),
-        "referrer" => "social_media",
-        "email_verified" => true
+        "timestamp" => date('c')
     ],
-    "tags" => ["purchase", "payment", "usd", "checkout-v2"],
-    "notify" => true,
-    "icon" => "💰",
-    "apply_rule_only" => false,
-    "user" => ["id" => "usr_67890"],
-    "type" => "Transaction",
-    "sessionID" => "sid_20750ebc-dabf-4fd4-9498",
-    "feature" => "Checkout",
-    "topic" => "@Sales"
+    "tags" => ["purchase", "payment", "usd"],
+    "type" => "Transaction"
 ]);
 ```
 
-### Markable Events
+### User Identification
 
-The markable feature allows you to categorize events with custom markers and later retrieve specific groups of events.
+```php
+$response = $sdk->identifyUser([
+    "id" => "usr_67890",
+    "email" => "john.smith@example.com",
+    "full_name" => "John Smith",
+    "organization" => "Acme Inc.",
+    "data" => [
+        "plan_type" => "Premium",
+        "signup_date" => "2023-04-15T10:00:00Z"
+    ]
+]);
+```
+
+### Configuration Options
+
+```php
+// Enable/disable tracking globally
+$sdk->enableTracking(); // Enable tracking (default)
+$sdk->disableTracking(); // Disable all tracking operations
+
+// Set custom options at runtime
+$sdk->setMaxBatchSize(50);
+$sdk->setVerboseLogging(true);
+$sdk->setMaxRetries(3);
+$sdk->setBaseUrl('https://staging.evntaly.com');
+$sdk->setDataValidation(true);
+
+// Get current configuration
+$info = $sdk->getSDKInfo();
+```
+
+## Core Features
+
+### Batch Processing
+
+```php
+// Add events to batch without sending immediately
+$sdk->addToBatch([
+    "title" => "User Login",
+    "description" => "User successfully logged in"
+]);
+
+$sdk->addToBatch([
+    "title" => "Profile Viewed",
+    "description" => "User viewed their profile page"
+]);
+
+// When ready, flush all batched events in a single request
+$success = $sdk->flushBatch();
+
+// The batch is automatically flushed when it reaches the configured maxBatchSize
+```
+
+### Markable Events
 
 ```php
 // Track an event with a marker
 $sdk->track([
     "title" => "Critical Error",
-    "description" => "Database connection failed",
-    "data" => ["error_code" => "DB_001"]
+    "description" => "Database connection failed"
 ], "critical-errors");
 
 // Using the flexible markEvent method
@@ -131,60 +227,25 @@ $sdk->markEvent(
     [                               // Event data
         "query_time" => 5.2,
         "query" => "SELECT * FROM large_table"
-    ],
-    [                               // Event options
-        "tags" => ["database", "performance"],
-        "type" => "Performance"
     ]
 );
 
-// 4. Mark an existing event object
-$event = ["title" => "User Login", "description" => "User logged in successfully"];
-$sdk->markEvent($event, "auth");
+// Get events with a specific marker
+$criticalErrors = $sdk->getMarkedEvents("critical-errors");
+
+// Get all available markers
+$markers = $sdk->getMarkers();
 
 // Check if an event is marked
 if ($sdk->hasMarkedEvent("evt_12345")) {
     echo "Event is marked!";
 }
 
-// Add to batch with a marker
-$sdk->addToBatch([
-    "title" => "User Login",
-    "description" => "User logged in successfully"
-], "auth");
-
-// Create and track with a marker
-$sdk->createAndTrackEvent(
-    "Feature Used",
-    "User used a premium feature",
-    ["feature_id" => "premium_export"],
-    ["tags" => ["premium", "export"]],
-    "feature-usage"
-);
-```
-
-### Retrieving Marked Events
-
-```php
-// Get all available markers
-$markers = $sdk->getMarkers();
-// Returns: ["critical-errors", "performance", "auth", "feature-usage"]
-
-// Get all events with a specific marker
-$criticalErrors = $sdk->getMarkedEvents("critical-errors");
-// Returns array of critical error events
-
-// Get all marked events (across all categories)
-$allMarkedEvents = $sdk->getMarkedEvents();
-
 // Clear a specific marker
 $sdk->clearMarker("critical-errors");
-// Removes all events associated with this marker
 ```
 
 ### Spotlight Events
-
-Create attention-grabbing events with priority levels that stand out in the UI and ensure important events get noticed.
 
 ```php
 // Create a new spotlight event with high priority
@@ -194,8 +255,7 @@ $sdk->createSpotlightEvent(
     "critical",  // Priority: 'low', 'medium', 'high', 'critical'
     [
         "component" => "Database",
-        "error_code" => "DB_CLUSTER_01",
-        "affected_services" => ["user-api", "payment-service"]
+        "error_code" => "DB_CLUSTER_01"
     ],
     "system-alerts"  // Optional marker
 );
@@ -206,52 +266,11 @@ $sdk->spotlightExistingEvent(
     "high"             // Priority level
 );
 
-// Get all spotlight events, sorted by priority (critical first)
+// Get all spotlight events, sorted by priority
 $spotlightEvents = $sdk->getSpotlightEvents();
-
-// Highlight events with a specific marker
-$sdk->highlightMarkedEvents(
-    "payment-failures",
-    "#FF0000",  // Custom highlight color (hex)
-    "💰"        // Custom icon
-);
 ```
-
-Spotlight events automatically include:
-- Priority-based styling and icons 
-- Visual highlighting
-- Permanent marking
-- Priority-based tags
-- Optional notifications
-- Pinning in the UI
-
-### Persistent Storage
-
-Save and load marked events to ensure they remain available between application restarts:
-
-```php
-// Save all marked events to the default location
-$sdk->persistMarkedEvents();
-
-// Save to a custom file path
-$sdk->persistMarkedEvents('/path/to/marked_events.json');
-
-// Load previously saved events (merging with current events)
-$sdk->loadMarkedEvents();
-
-// Load from custom path and replace current events
-$sdk->loadMarkedEvents('/path/to/marked_events.json', false);
-```
-
-This feature is particularly useful for:
-- Preserving important markers across application restarts
-- Sharing marked events between different processes or servers
-- Creating permanent records of critical events
-- Building an event timeline that persists outside of the Evntaly platform
 
 ### Timed Events
-
-Create events that automatically expire after a specified duration, with options to preserve them in an archive.
 
 ```php
 // Create a timed event that expires after 24 hours
@@ -271,61 +290,295 @@ $sdk->createTimedEvent(
     true                     // Preserve after expiration
 );
 
-// Create a temporary event that disappears after 1 hour
-$sdk->createTimedEvent(
-    "CI Build Running",
-    "Continuous integration pipeline in progress",
-    "ci-builds",
-    3600,                    // 1 hour
-    ["build_id" => "12345"],
-    [],
-    false                    // Don't preserve after expiration
-);
-
-// Clean up any expired events
-$cleanedCount = $sdk->cleanupExpiredEvents();
-echo "Cleaned up {$cleanedCount} expired events";
-
 // Extend a timed event by 2 hours
 $sdk->extendTimedEvent("evt_12345abcde", 7200);
 
 // Make a timed event permanent (remove expiration)
 $sdk->makeEventPermanent("evt_12345abcde");
+
+// Clean up any expired events
+$cleanedCount = $sdk->cleanupExpiredEvents();
 ```
 
-Timed events are perfect for:
-- Temporary notices that should automatically disappear
-- Creating event-based workflows with automatic progression
-- Time-sensitive alerts that resolve themselves
-- Building countdown timers for important operations
-- Creating event archives by preserving expired events
-
-### Simplified Event Creation
-
-For a more streamlined approach to creating and tracking events, use the `createAndTrackEvent` method:
+### Error Handling
 
 ```php
-// Create and track an event in one operation
-$sdk->createAndTrackEvent(
-    'User Registered',
-    'New user registration',
-    [
-        'email' => 'user@example.com',
-        'plan' => 'premium',
-        'referrer' => 'google'
-    ],
-    [
-        'tags' => ['registration', 'new-user'],
-        'notify' => true,
-        'icon' => '👤',
-        'type' => 'Authentication'
+// Register an error handler
+$sdk->onError(function($error, $context) {
+    // Custom error handling logic
+    error_log("Evntaly SDK Error: " . $error->getMessage());
+    
+    // Return true to suppress the exception, false to throw it
+    return false;
+});
+
+// Set error handling options
+$sdk->setErrorHandlingOptions([
+    'throwExceptions' => true,      // Whether to throw exceptions or suppress them
+    'logErrors' => true,            // Whether to log errors to error_log
+    'detailedLogging' => true,      // Whether to include detailed context in logs
+]);
+
+try {
+    $sdk->track($invalidEvent);
+} catch (Evntaly\Exception\EvntalyException $e) {
+    // Handle specific SDK exceptions
+}
+```
+
+## Advanced Features
+
+### Context Awareness
+
+```php
+// Initialize SDK with context awareness (enabled by default)
+$sdk = new EvntalySDK($developerSecret, $projectToken, [
+    'autoContext' => true,
+    'includeDetailedEnvironment' => true
+]);
+
+// Access correlation IDs for tracing
+echo $sdk->getCorrelationId(); // Get current correlation ID
+echo $sdk->getRequestId();     // Get current request ID
+
+// Set a custom correlation ID for cross-service tracing
+$sdk->setCorrelationId('custom-correlation-id');
+
+// Get correlation headers for HTTP requests
+$headers = $sdk->getCorrelationHeaders();
+
+// Disable context awareness if needed
+$sdk->disableContextAwareness();
+
+// Re-enable context awareness
+$sdk->enableContextAwareness();
+```
+
+### Sampling Capabilities
+
+```php
+// Initialize SDK with sampling configuration
+$sdk = new EvntalySDK($developerSecret, $projectToken, [
+    'sampling' => [
+        'rate' => 0.1, // Sample 10% of events
+        'priorityEvents' => ['error', 'payment', 'security'], // Always track these
+        'typeRates' => [
+            'debug' => 0.01, // Only sample 1% of debug events
+            'critical' => 1.0 // Sample 100% of critical events
+        ]
     ]
-);
+]);
+
+// Or configure sampling after initialization
+$sdk->setSamplingRate(0.2); // 20% sampling
+$sdk->setPriorityEvents(['error', 'exception', 'payment']);
+
+// Check if an event would be sampled
+if ($sdk->shouldSampleEvent($event)) {
+    // Event passed sampling criteria
+}
+```
+
+### Performance Tracking
+
+```php
+// Initialize performance tracking
+$performance = $sdk->initPerformanceTracking(true, [
+    'slow' => 1000,      // 1000ms = slow operation
+    'warning' => 500,    // 500ms = warning
+    'acceptable' => 100  // 100ms = acceptable
+]);
+
+// Track a simple operation
+$spanId = $performance->startSpan('database-query', ['query' => 'SELECT * FROM users']);
+// ... perform operation
+$performance->endSpan($spanId, ['rows' => 10]);
+
+// Track callable with timing
+$result = $sdk->trackPerformance('api-request', function() {
+    // Code to measure
+    return $apiResponse;
+}, ['endpoint' => '/users']);
+
+// Analyze performance trends
+$analysis = $performance->analyzePerformanceTrend('database-query');
+if ($analysis['status'] === 'regression') {
+    // Handle performance regression
+    echo "Warning: Performance degrading by {$analysis['trend_pct']}%";
+}
+```
+
+### Asynchronous Processing
+
+```php
+// Using ReactPHP for async event processing
+use Evntaly\Async\ReactDispatcher;
+use React\EventLoop\Factory;
+
+$loop = Factory::create();
+$dispatcher = new ReactDispatcher($sdk, $loop);
+
+// Dispatch a single event asynchronously
+$eventId = $dispatcher->dispatch([
+    'title' => 'User Logged In',
+    'userId' => 12345
+], 'login-marker');
+
+// Dispatch with priority (critical, high, normal, low)
+$highPriorityId = $dispatcher->dispatch($event, 'payment-marker', ReactDispatcher::PRIORITY_HIGH);
+
+// Dispatch a batch of events
+$batchIds = $dispatcher->dispatchBatch($events);
+
+// Schedule an event for future processing (delay in milliseconds)
+$scheduledId = $dispatcher->scheduleEvent($event, 5000); // 5 seconds later
+
+// Using Amp for async event processing
+use Evntaly\Async\AmpDispatcher;
+use Amp\Loop;
+
+Loop::run(function () use ($sdk) {
+    $dispatcher = new AmpDispatcher($sdk);
+    
+    $eventId = $dispatcher->dispatch([
+        'title' => 'User Signed Up',
+        'email' => 'user@example.com'
+    ]);
+    
+    // Wait for all events to complete
+    yield $dispatcher->wait();
+});
+
+// Background worker for processing events in separate process
+use Evntaly\Async\BackgroundWorker;
+
+$worker = new BackgroundWorker($sdk);
+$worker->setBatchSize(50);
+$worker->setCheckInterval(60); // Check for events every 60 seconds
+$worker->startInBackground();  // Start worker process
+```
+
+### Data Export & Import
+
+```php
+// Export marked events to CSV
+$sdk->exportMarkedEvents('critical-errors', 'csv', 'critical-errors.csv');
+
+// Export to JSON
+$eventsJson = $sdk->exportToJson($events);
+
+// Export options
+$exportOpts = [
+    'fields' => [
+        'id' => 'ID',
+        'title' => 'Title',
+        'description' => 'Description',
+        'timestamp' => 'Date',
+        'data.user_id' => 'User ID'
+    ],
+    'pretty' => true,
+    'delimiter' => ','
+];
+$sdk->exportToCsv($events, 'export.csv', $exportOpts);
+
+// Import from CSV
+$importedEvents = $sdk->importEvents('exported-events.csv', 'csv');
+
+// Import from JSON
+$jsonEvents = $sdk->importEvents('events.json', 'json');
+
+// Import and track events from another platform
+$sdk->importFromPlatform('google_analytics', $gaData);
+$sdk->importFromPlatform('mixpanel', $mixpanelData);
+
+// Import and immediately track
+$trackedCount = $sdk->importAndTrackEvents('events.json');
+```
+
+### Webhooks & Realtime Updates
+
+```php
+// Initialize SDK with webhook and realtime configuration
+$sdk = new EvntalySDK($developerSecret, $projectToken, [
+    'webhookSecret' => 'your_webhook_signing_secret',
+    'realtime' => [
+        'enabled' => true,
+        'serverUrl' => 'wss://realtime.evntaly.com'
+    ]
+]);
+
+// Register webhook handler
+$sdk->onWebhook('event.created', function($data) {
+    echo "New event created: {$data['title']}";
+});
+
+// Register handlers for multiple events
+$sdk->onWebhook('user.identified', function($data) {
+    echo "User identified: {$data['full_name']}";
+});
+
+// Process incoming webhook
+$payload = file_get_contents('php://input');
+$headers = getallheaders();
+$sdk->processWebhook($payload, $headers);
+
+// Connect to realtime updates
+$sdk->connectRealtime();
+
+// Subscribe to a channel
+$sdk->subscribeToChannel('events', function($data) {
+    echo "Realtime event received: {$data['title']}";
+});
+
+// Register connection event handlers
+$sdk->realtime()->onConnection('connect', function() {
+    echo "Connected to realtime server";
+});
+
+$sdk->realtime()->onConnection('disconnect', function() {
+    echo "Disconnected from realtime server";
+});
+
+// Send a message to the server
+$sdk->realtime()->sendMessage('client.event', [
+    'action' => 'page_view',
+    'page' => '/dashboard'
+]);
+```
+
+### Auto-instrumentation
+
+```php
+// Enable auto-instrumentation in Laravel
+// In config/evntaly.php
+return [
+    'auto_instrument' => true,
+    'instrument_routes' => true,
+    'instrument_queries' => true,
+    'instrument_exceptions' => true,
+    'instrument_auth' => true,
+    'instrument_cache' => true,
+    'instrument_jobs' => true,
+    'instrument_commands' => true,
+];
+
+// Enable auto-instrumentation in Symfony
+# config/packages/evntaly.yaml
+evntaly:
+    auto_instrument: true
+    instrument_controllers: true
+    instrument_doctrine: true
+    instrument_exceptions: true
+    instrument_security: true
+    instrument_cache: true
+    instrument_console: true
+
+// Auto-instrument specific functions manually
+$sdk->autoInstrument('App\Services\PaymentService', 'processPayment');
+$sdk->autoInstrument('App\Http\Controllers\UserController');
 ```
 
 ### GraphQL Tracking
-
-For applications using GraphQL, you can track GraphQL operations with the `trackGraphQL` method:
 
 ```php
 // Track a GraphQL query
@@ -361,282 +614,368 @@ $sdk->trackGraphQL(
 );
 ```
 
-This will automatically detect errors in the GraphQL response and track them accordingly, making it easy to monitor query performance and failure rates.
-
-### Batch Event Tracking
-
-For improved performance when tracking multiple events, use the batch processing functionality:
+### Middleware System
 
 ```php
-// Add events to batch without sending immediately
-$sdk->addToBatch([
-    "title" => "User Login",
-    "description" => "User successfully logged in",
-    "type" => "Authentication"
-]);
-
-$sdk->addToBatch([
-    "title" => "Profile Viewed",
-    "description" => "User viewed their profile page",
-    "type" => "Navigation"
-]);
-
-// Continue adding events as needed...
-
-// When ready, flush all batched events in a single request
-$success = $sdk->flushBatch();
-
-// The batch is automatically flushed when it reaches the configured maxBatchSize
-```
-
-### Identifying Users
-
-To identify or update user details, use the `identifyUser` method. This helps link events to specific users and enriches your analytics.
-
-```php
-$response = $sdk->identifyUser([
-    "id" => "usr_67890",
-    "email" => "john.smith@example.com",
-    "full_name" => "John Smith",
-    "organization" => "Acme Inc.",
-    "data" => [
-        "username" => "johnsmith",
-        "location" => "New York, USA",
-        "plan_type" => "Premium",
-        "signup_date" => "2023-04-15T10:00:00Z",
-        "timezone" => "America/New_York"
-    ]
-]);
-```
-
-### SDK Configuration
-
-The SDK offers fluent configuration methods for fine-tuning its behavior at runtime:
-
-```php
-// Customize the maximum batch size
-$sdk->setMaxBatchSize(50);
-
-// Adjust retry policies for failed requests
-$sdk->setMaxRetries(2);
-
-// Toggle verbose logging
-$sdk->setVerboseLogging(false);
-
-// Toggle data validation
-$sdk->setDataValidation(true);
-
-// Use a custom endpoint (staging/testing)
-$sdk->setBaseUrl('https://staging.evntaly.com');
-// Reset to default URL
-$sdk->setBaseUrl(null);
-
-// Get current SDK configuration
-$info = $sdk->getSDKInfo();
-```
-
-### Enabling/Disabling Tracking
-
-You can globally enable or disable event tracking for the current SDK instance. This might be useful for development/testing or respecting user consent.
-
-```php
-// Disable tracking - subsequent track/identify calls will be ignored
-$sdk->disableTracking();
-
-// Re-enable tracking
-$sdk->enableTracking();
-```
-
-### Utility Helpers
-
-The SDK includes a set of utility methods to help with common tasks. These are accessible through the `EvntalyUtils` class:
-
-```php
-use Evntaly\EvntalyUtils;
-
-// Generate unique IDs
-$sessionId = EvntalyUtils::generateSessionId();
-$userId = EvntalyUtils::generateUserId();
-
-// Create event structure with defaults
-$event = EvntalyUtils::createEvent(
-    'Page Viewed',
-    'User viewed the homepage',
-    ['page' => 'home', 'referrer' => 'google'],
-    ['tags' => ['page-view'], 'type' => 'Navigation']
-);
-
-// Validate event data
-$issues = EvntalyUtils::validateEventData($event);
-if (empty($issues)) {
-    // Event data is valid
-} else {
-    foreach ($issues as $issue) {
-        echo "Validation error: $issue\n";
-    }
-}
-
-// Debug logging
-EvntalyUtils::debug('Processing event', ['event_id' => 123]);
-
-// Redact sensitive data for logging
-$userData = [
-    'id' => '12345',
-    'name' => 'John Smith',
-    'email' => 'john@example.com',
-    'api_key' => 'secret_key_123',
-    'preferences' => [
-        'theme' => 'dark',
-        'token' => 'abc123'
-    ]
-];
-
-$redactedData = EvntalyUtils::redactSensitiveData($userData);
-```
-
-### Enterprise Features
-
-#### Middleware System
-
-The SDK includes a powerful middleware system that allows you to intercept, modify, and extend events before they're sent to the Evntaly API:
-
-```php
-use Evntaly\Middleware\EventMiddleware;
-
-// Register a custom middleware function
+// Register custom middleware for event processing
 $sdk->registerMiddleware(function($event) {
-    // Add your custom logic to modify the event
-    $event['data']['custom_field'] = 'custom_value';
+    // Add custom data to all events
+    $event['data']['client_version'] = '1.0.0';
     return $event;
-}, 'my-custom-middleware');
+}, 'add-client-version');
 
-// Add application context to all events
-$sdk->registerMiddleware(EventMiddleware::addContext([
-    'app_name' => 'My Application',
-    'instance_id' => 'prod-server-01',
-    'region' => 'us-west-1'
+// Add middleware that adds context
+$sdk->registerMiddleware(Evntaly\Middleware\EventMiddleware::addContext([
+    'app_name' => 'Example App',
+    'environment' => 'production'
 ]));
 
-// Add environment information
-$sdk->registerMiddleware(EventMiddleware::addEnvironmentInfo(
-    '2.5.0',          // App version
-    'production',     // Environment
-    [                 // Additional info
-        'php_version' => PHP_VERSION,
-        'server' => $_SERVER['SERVER_SOFTWARE'] ?? 'unknown'
-    ]
-));
+// Middleware that redacts sensitive data
+$sdk->registerMiddleware(Evntaly\Middleware\EventMiddleware::redactSensitiveData());
 
-// Redact sensitive data
-$sdk->registerMiddleware(EventMiddleware::redactSensitiveData(
-    ['password', 'credit_card', 'ssn', 'token'],
-    '[REDACTED]'
-));
+// Add middleware with priority
+$sdk->registerMiddleware($validationMiddleware, 'validation', 10); // Higher priority
 
-// Add detailed timestamps
-$sdk->registerMiddleware(EventMiddleware::addTimestamps());
-
-// Add user agent info
-$sdk->registerMiddleware(EventMiddleware::addUserAgentInfo());
-
-// Encrypt sensitive fields
-$sdk->registerMiddleware(EventMiddleware::encryptSensitiveData(
-    getenv('ENCRYPTION_KEY'),
-    ['data.user.email', 'data.payment_details']
-));
-
-// Remove a named middleware
-$sdk->removeMiddleware('my-custom-middleware');
-
-// Clear all middleware
-$sdk->clearMiddleware();
+// Remove middleware
+$sdk->removeMiddleware('add-client-version');
 ```
 
-The SDK comes with several built-in middleware providers:
-
-| Middleware | Description |
-|------------|-------------|
-| `addContext` | Adds application context to all events |
-| `addEnvironmentInfo` | Adds environment information (app version, environment name) |
-| `redactSensitiveData` | Automatically redacts sensitive fields from events |
-| `enforceSchema` | Ensures events have required fields |
-| `addTimestamps` | Adds standardized timestamps to events |
-| `addUserAgentInfo` | Adds user agent and IP information |
-| `encryptSensitiveData` | Encrypts sensitive fields while preserving event structure |
-
-#### JSON Schema Validation
-
-Ensure your events maintain a consistent structure with JSON Schema validation:
+### Field-level Encryption
 
 ```php
-use Evntaly\Validator\SchemaValidator;
+// Initialize SDK with encryption
+$encryptionKey = hash('sha256', 'your-secure-encryption-key', true);
+$encryptor = new Evntaly\Encryption\OpenSSLEncryption($encryptionKey);
 
-// Create validator (strict mode throws exceptions for validation failures)
-$validator = new SchemaValidator(true);
+$sdk = new EvntalySDK(
+    $developerSecret,
+    $projectToken,
+    [
+        'sensitiveFields' => ['password', 'credit_card', 'ssn', 'email'],
+    ],
+    null,
+    $encryptor
+);
 
-// Register schemas from various sources
-$validator->registerSchema('default', 'schemas/default.schema.json'); // From file
-$validator->registerSchema('payment', [ /* schema array */ ]); // Direct schema
-$validator->registerSchemaDirectory('schemas'); // From directory
+// Add or update sensitive fields list
+$sdk->addSensitiveField('api_key');
+$sdk->setSensitiveFields(['password', 'credit_card', 'email']);
 
-// Use as middleware
-$sdk->registerMiddleware($validator->createMiddleware());
+// Manually encrypt a value
+$encryptedValue = $sdk->encryptValue('sensitive data');
 
-// Or validate manually
-try {
-    $errors = $validator->validate($event);
-    if (!empty($errors)) {
-        foreach ($errors as $error) {
-            echo "Validation error: $error\n";
-        }
+// Manually decrypt a value
+$decryptedValue = $sdk->decryptValue('__ENC__:encrypted_data');
+
+// Encrypt an entire event
+$encryptedEvent = $sdk->encryptEvent($event);
+
+// Decrypt an event
+$decryptedEvent = $sdk->decryptEvent($encryptedEvent);
+```
+
+### OpenTelemetry Integration
+
+```php
+// Initialize the OpenTelemetry bridge
+$otelBridge = $sdk->initOpenTelemetry([
+    'serviceName' => 'my-php-app',
+    'exporterEndpoint' => 'http://otel-collector:4317',
+]);
+
+// Create a span
+$span = $otelBridge->createSpan('http-request', [
+    'http.method' => 'GET',
+    'http.url' => '/api/users',
+]);
+
+// Add attributes to span
+$otelBridge->addAttribute('http.status_code', 200);
+
+// End the span
+$otelBridge->endSpan('success');
+
+// Track HTTP requests with OpenTelemetry
+$traceInfo = $sdk->trackHttpWithOTel(
+    'https://api.example.com/users',
+    'GET',
+    ['headers' => ['Accept' => 'application/json']]
+);
+
+// After the request completes
+$sdk->completeHttpWithOTel($traceInfo, true, [
+    'status' => 200,
+    'body' => $responseBody
+]);
+
+// Extract context from incoming request
+$context = $otelBridge->extractContext($_SERVER);
+
+// Track with existing context
+$otelBridge->trackWithContext($context, 'process-request', function() {
+    // Process the request
+});
+```
+
+### Persistent Storage
+
+```php
+// Save all marked events to the default location
+$sdk->persistMarkedEvents();
+
+// Save to a custom file path
+$sdk->persistMarkedEvents('/path/to/marked_events.json');
+
+// Load previously saved events (merging with current events)
+$sdk->loadMarkedEvents();
+
+// Load from custom path and replace current events
+$sdk->loadMarkedEvents('/path/to/marked_events.json', false);
+
+// Set custom storage adapter
+$redisStorage = new Evntaly\Storage\RedisStorageAdapter($redisClient);
+$sdk->setStorageAdapter($redisStorage);
+
+// Persist specific markers only
+$sdk->persistMarkedEvents(null, ['critical-errors', 'security-alerts']);
+```
+
+## Framework Integrations
+
+### Laravel Integration
+
+```php
+// In config/app.php, add the service provider
+'providers' => [
+    // ...
+    Evntaly\Integration\Laravel\EvntalyServiceProvider::class,
+],
+
+// Add the facade
+'aliases' => [
+    // ...
+    'Evntaly' => Evntaly\Integration\Laravel\Facades\Evntaly::class,
+],
+
+// Publish the config file
+php artisan vendor:publish --provider="Evntaly\Integration\Laravel\EvntalyServiceProvider"
+
+// Then track events using the facade
+Evntaly::track([
+    'title' => 'User Login',
+    'description' => 'User logged in successfully'
+]);
+
+// Access performance tracking
+$span = Evntaly::performance()->startSpan('database-query');
+// ... perform database query
+Evntaly::performance()->endSpan($span);
+
+// Mark events with the facade
+Evntaly::markEvent('critical-issue', 'System Outage', 'Database server down');
+
+// Middleware usage
+use Evntaly\Integration\Laravel\Middleware\TrackRequests;
+
+Route::get('/dashboard', 'DashboardController@index')
+    ->middleware(TrackRequests::class);
+```
+
+### Symfony Integration
+
+```yaml
+# config/bundles.php
+return [
+    // ...
+    Evntaly\Integration\Symfony\EvntalyBundle::class => ['all' => true],
+];
+
+# config/packages/evntaly.yaml
+evntaly:
+    developer_secret: '%env(EVNTALY_DEVELOPER_SECRET)%'
+    project_token: '%env(EVNTALY_PROJECT_TOKEN)%'
+    verbose_logging: true
+    max_batch_size: 20
+    auto_context: true
+    sampling:
+        rate: 0.5
+        priority_events: ['error', 'security']
+    track_performance: true
+    auto_track_performance: true
+    auto_instrument: true
+    webhook_secret: '%env(EVNTALY_WEBHOOK_SECRET)%'
+    realtime_enabled: '%env(bool:EVNTALY_REALTIME_ENABLED)%'
+    realtime_server: '%env(EVNTALY_REALTIME_SERVER)%'
+```
+
+In your controllers/services:
+```php
+use Evntaly\EvntalySDK;
+
+class YourController
+{
+    public function __construct(private EvntalySDK $evntaly) {}
+    
+    public function someAction()
+    {
+        $this->evntaly->track([
+            'title' => 'Page View',
+            'description' => 'User viewed the homepage'
+        ]);
     }
-} catch (\RuntimeException $e) {
-    // Handle strict validation failures
 }
 ```
 
-JSON Schema validation helps maintain data quality by:
-- Enforcing required fields
-- Validating data types
-- Ensuring proper formatting
-- Documenting expected event structure
-- Supporting complex validation rules
+## Testing
 
-#### Field-Level Encryption
-
-For applications handling sensitive data, encrypt specific fields while maintaining the ability to process events:
+### Unit Testing
 
 ```php
-use Evntaly\Middleware\EventMiddleware;
+use PHPUnit\Framework\TestCase;
+use Evntaly\EvntalySDK;
 
-// Generate a secure encryption key
-$encryptionKey = getenv('EVNTALY_ENCRYPTION_KEY');
-
-// Register encryption middleware
-$sdk->registerMiddleware(EventMiddleware::encryptSensitiveData(
-    $encryptionKey,
-    [
-        'data.user.email',
-        'data.payment_details.card_number',
-        'data.personal_info'
-    ]
-));
+class YourTest extends TestCase
+{
+    private $sdk;
+    
+    protected function setUp(): void
+    {
+        // Create a mock HTTP client
+        $mockClient = $this->createMock(\Evntaly\Http\ClientInterface::class);
+        
+        // Configure the mock client to return success responses
+        $mockClient->method('request')->willReturn(
+            new \GuzzleHttp\Psr7\Response(200, [], json_encode(['success' => true]))
+        );
+        
+        // Initialize SDK with the mock client
+        $this->sdk = new EvntalySDK('test_secret', 'test_token', [
+            'client' => $mockClient
+        ]);
+    }
+    
+    public function testTrackEvent()
+    {
+        $result = $this->sdk->track([
+            'title' => 'Test Event',
+            'description' => 'Testing SDK'
+        ]);
+        
+        $this->assertTrue($result);
+    }
+}
 ```
 
-This provides:
-- Field-level encryption rather than all-or-nothing
-- Transparent handling in your application code
-- AES-256-CBC encryption with proper IV handling
-- Ability to selectively encrypt only sensitive data
-- Preservation of event structure for analytics
+### Integration Testing
 
-## Contributing
+```php
+// integration-test.php
 
-Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+require_once 'vendor/autoload.php';
 
-## License
+// Set your test credentials
+$developerSecret = 'dev_test_secret';
+$projectToken = 'proj_test_token';
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+// Create SDK instance
+$sdk = new Evntaly\EvntalySDK($developerSecret, $projectToken, [
+    'verboseLogging' => true
+]);
+
+echo "Testing SDK functionality...\n";
+
+// Test tracking
+$trackResult = $sdk->track([
+    'title' => 'Integration Test',
+    'description' => 'Testing SDK functionality',
+    'data' => [
+        'test_id' => uniqid(),
+        'timestamp' => date('c')
+    ]
+]);
+
+echo "Track result: " . ($trackResult ? "Success" : "Failed") . "\n";
+
+// Test batch processing
+$sdk->addToBatch([
+    'title' => 'Batch Test 1',
+    'description' => 'Testing batch processing'
+]);
+
+$sdk->addToBatch([
+    'title' => 'Batch Test 2',
+    'description' => 'Second batch event'
+]);
+
+$flushResult = $sdk->flushBatch();
+echo "Batch flush result: " . ($flushResult ? "Success" : "Failed") . "\n";
+
+echo "Integration test completed!\n";
+```
+
+## Configuration Reference
+
+```php
+$options = [
+    // Core settings
+    'maxBatchSize' => 20,                  // Max events in a batch before auto-flush
+    'verboseLogging' => true,              // Enable detailed logging
+    'maxRetries' => 5,                     // Max request retries for failed API calls
+    'baseUrl' => 'https://api.evntaly.com', // Custom API endpoint
+    'validateData' => true,                // Enable event data validation
+    'timeout' => 15,                       // HTTP request timeout in seconds
+    
+    // Context settings
+    'autoContext' => true,                 // Automatically add context to events
+    'includeDetailedEnvironment' => false, // Include detailed environment info
+    
+    // Sampling configuration
+    'sampling' => [
+        'rate' => 0.5,                     // Overall sampling rate (0.0-1.0)
+        'priorityEvents' => ['error'],     // Always include these event types
+        'typeRates' => [                   // Type-specific sampling rates
+            'debug' => 0.1,
+            'critical' => 1.0
+        ]
+    ],
+    
+    // Performance tracking
+    'trackPerformance' => true,            // Enable performance tracking
+    'autoTrackPerformance' => true,        // Auto-track slow operations
+    'performanceThresholds' => [           // Performance thresholds (ms)
+        'slow' => 1000,
+        'warning' => 500,
+        'acceptable' => 100
+    ],
+    
+    // Auto-instrumentation
+    'autoInstrument' => true,              // Enable auto-instrumentation
+    'instrumentRoutes' => true,            // Track routes/controllers
+    'instrumentQueries' => true,           // Track database queries
+    'instrumentExceptions' => true,        // Track exceptions
+    
+    // Webhooks and realtime
+    'webhookSecret' => 'your_secret',      // Webhook signing secret
+    'realtime' => [
+        'enabled' => true,                 // Enable realtime updates
+        'serverUrl' => 'wss://realtime.evntaly.com'
+    ],
+    
+    // Security settings
+    'sensitiveFields' => [                 // Fields to encrypt
+        'password', 'credit_card', 'ssn', 'email'
+    ],
+    
+    // Error handling
+    'throwExceptions' => true,             // Whether to throw exceptions
+    'logErrors' => true,                   // Whether to log errors
+    'detailedLogging' => true,             // Log detailed context with errors
+    
+    // Storage options
+    'storageAdapter' => null,              // Custom storage adapter
+    'storagePath' => null,                 // Custom storage path
+];
+```
 
 ## Contributors
 
@@ -662,3 +1001,7 @@ We extend our sincere appreciation to all the talented individuals who have cont
 </table>
 
 Interested in contributing? Check out our [contribution guidelines](CONTRIBUTING.md) to get started!
+
+## License
+
+The Evntaly PHP SDK is open-sourced software licensed under the [MIT license](LICENSE.md).
