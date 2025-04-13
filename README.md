@@ -550,7 +550,6 @@ $sdk->realtime()->sendMessage('client.event', [
 
 ```php
 // Enable auto-instrumentation in Laravel
-// In config/evntaly.php
 return [
     'auto_instrument' => true,
     'instrument_routes' => true,
@@ -745,7 +744,6 @@ $sdk->persistMarkedEvents(null, ['critical-errors', 'security-alerts']);
 ### Laravel Integration
 
 ```php
-// In config/app.php, add the service provider
 'providers' => [
     // ...
     Evntaly\Integration\Laravel\EvntalyServiceProvider::class,
@@ -784,7 +782,6 @@ Route::get('/dashboard', 'DashboardController@index')
 ### Symfony Integration
 
 ```yaml
-# config/bundles.php
 return [
     // ...
     Evntaly\Integration\Symfony\EvntalyBundle::class => ['all' => true],
