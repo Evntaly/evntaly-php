@@ -37,7 +37,9 @@ class EvntalySDKTest extends TestCase
         ];
 
         $result = $this->sdk->track($eventData);
-        $this->assertTrue($result, "Failed to track event");
+        $this->assertIsArray($result, "Track should return response data array");
+        $this->assertArrayHasKey('success', $result, "Response should have a success key");
+        $this->assertTrue($result['success'], "Track should return success=true");
     }
 
     public function testIdentifyUser()
@@ -53,22 +55,45 @@ class EvntalySDKTest extends TestCase
                 "location" => "San Francisco, CA",
                 "salary" => 100000,
                 "timezone" => "UTC-8",
-                ],
-            ];
+            ],
+        ];
 
         $result = $this->sdk->identifyUser($userData);
-        $this->assertTrue($result, "Failed to identify user");
+        $this->assertIsArray($result, "identifyUser should return response data array");
+        $this->assertArrayHasKey('success', $result, "Response should have a success key");
+        $this->assertTrue($result['success'], "identifyUser should return success=true");
     }
 
     public function testDisableTracking()
     {
-        $this->sdk->disableTracking();
+        $result = $this->sdk->disableTracking();
+        $this->assertIsArray($result, "disableTracking should return an array");
+        $this->assertTrue($result['success'], "disableTracking should return success=true");
+
         $eventData = [
             'title' => 'Should Not Track',
             'description' => 'Tracking is off',
             'data' => ['user_id' => '67890']
         ];
-        $result = $this->sdk->track($eventData);
-        $this->assertFalse($result, "Tracking should be disabled");
+
+        $trackResult = $this->sdk->track($eventData);
+        $this->assertFalse($trackResult['success'], "Tracking should be disabled");
+        $this->assertEquals('Tracking is disabled', $trackResult['error'], "Should return appropriate error message");
+    }
+
+    public function testEnableTracking()
+    {
+        $this->sdk->disableTracking();
+
+        $enableResult = $this->sdk->enableTracking();
+        $this->assertIsArray($enableResult, "enableTracking should return an array");
+        $this->assertTrue($enableResult['success'], "enableTracking should return success=true");
+    }
+
+    public function testCheckLimit()
+    {
+        $result = $this->sdk->checkLimit();
+        $this->assertIsArray($result, "checkLimit should return an array");
+        $this->assertArrayHasKey('success', $result, "Response should contain success key");
     }
 }
