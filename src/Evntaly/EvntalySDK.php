@@ -57,7 +57,7 @@ class EvntalySDK
      */
     public function checkLimit() : array
     {
-        $url = "/prod/api/v1/account/check-limits/{$this->developerSecret}";
+        $url = "/prod/api/v1/account/check-limits/$this->developerSecret";
         $headers = [
             'Content-Type' => 'application/json',
         ];
