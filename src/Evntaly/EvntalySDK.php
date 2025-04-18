@@ -55,7 +55,7 @@ class EvntalySDK
      *
      * @return array|false Response data if successful, false if limit is reached or an error occurs
      */
-    public function checkLimit(): array|false
+    public function checkLimit() : array
     {
         $url = "/prod/api/v1/account/check-limits/{$this->developerSecret}";
         $headers = [
@@ -135,7 +135,6 @@ class EvntalySDK
             ]);
 
             $responseData = json_decode($response->getBody()->getContents(), true);
-            sleep(5);
             return [
                 'success' => true,
                 'data' => $responseData
