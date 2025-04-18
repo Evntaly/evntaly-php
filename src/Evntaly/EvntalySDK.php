@@ -53,9 +53,9 @@ class EvntalySDK
     /**
      * Check if the API usage limit allows further tracking.
      *
-     * @return bool True if tracking is allowed, false if limit is reached or an error occurs
+     * @return array|false Response data if successful, false if limit is reached or an error occurs
      */
-    public function checkLimit(): bool
+    public function checkLimit(): array|false
     {
         $url = "/prod/api/v1/account/check-limits/{$this->developerSecret}";
         $headers = [
@@ -70,14 +70,23 @@ class EvntalySDK
             $data = json_decode($response->getBody()->getContents(), true);
 
             if (!isset($data['limitReached'])) {
-                error_log("Unexpected response: " . json_encode($data));
-                return false; // Default behavior if key is missing
+                return [
+                    'success' => false,
+                    'error' => 'Unexpected response format',
+                    'response' => $data
+                ];
             }
 
-            return !$data['limitReached']; 
+            return [
+                'success' => true,
+                'limitReached' => $data['limitReached'],
+                'response' => $data
+            ];
         } catch (Exception | GuzzleException $e) {
-            error_log("Error checking limit: " . $e->getMessage());
-            return false; 
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
         }
     }
 
@@ -85,18 +94,31 @@ class EvntalySDK
      * Track an event by sending it to the Evntaly API.
      *
      * @param array $eventData Associative array of event details (e.g., title, description, sessionID)
-     * @return bool True if the event was tracked successfully, false otherwise
+     * @return array Response data
      */
-    public function track(array $eventData): bool
+    public function track(array $eventData): array
     {
         if (!$this->trackingEnabled) {
-            error_log("Tracking is disabled. Event not sent.");
-            return false;
+            return [
+                'success' => false,
+                'error' => 'Tracking is disabled'
+            ];
         }
 
-        if (!$this->checkLimit()) {
-            error_log("checkLimit returned false. Event not sent.");
-            return false;
+        $limitCheck = $this->checkLimit();
+        if ($limitCheck['success'] === false) {
+            return [
+                'success' => false,
+                'error' => 'Failed to check usage limits',
+                'details' => $limitCheck
+            ];
+        }
+
+        if ($limitCheck['limitReached']) {
+            return [
+                'success' => false,
+                'error' => 'Usage limit reached'
+            ];
         }
 
         $url = "/prod/api/v1/register/event";
@@ -113,11 +135,16 @@ class EvntalySDK
             ]);
 
             $responseData = json_decode($response->getBody()->getContents(), true);
-            echo "Track event response: " . json_encode($responseData);
-            return true;
+            sleep(5);
+            return [
+                'success' => true,
+                'data' => $responseData
+            ];
         } catch (Exception | GuzzleException $e) {
-            error_log("Track event error: " . $e->getMessage());
-            return false;
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
         }
     }
 
@@ -125,9 +152,9 @@ class EvntalySDK
      * Identify a user in the Evntaly system.
      *
      * @param array $userData Associative array of user details (e.g., id, email, full_name)
-     * @return bool True if the user was identified successfully, false otherwise
+     * @return array Response data
      */
-    public function identifyUser(array $userData): bool
+    public function identifyUser(array $userData): array
     {
         $url = "/prod/api/v1/register/user";
         $headers = [
@@ -143,33 +170,43 @@ class EvntalySDK
             ]);
 
             $responseData = json_decode($response->getBody()->getContents(), true);
-            echo "Identify user response: " . json_encode($responseData);
-            return true;
+            return [
+                'success' => true,
+                'data' => $responseData
+            ];
         } catch (Exception | GuzzleException $e) {
-            error_log("Identify user error: " . $e->getMessage());
-            return false;
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
         }
     }
 
     /**
      * Disable event tracking.
      *
-     * @return void
+     * @return array Status information
      */
-    public function disableTracking(): void
+    public function disableTracking(): array
     {
         $this->trackingEnabled = false;
-        echo "Tracking disabled.";
+        return [
+            'success' => true,
+            'message' => 'Tracking disabled'
+        ];
     }
 
     /**
      * Enable event tracking.
      *
-     * @return void
+     * @return array Status information
      */
-    public function enableTracking(): void
+    public function enableTracking(): array
     {
         $this->trackingEnabled = true;
-        echo "Tracking enabled.";
+        return [
+            'success' => true,
+            'message' => 'Tracking enabled'
+        ];
     }
 }
