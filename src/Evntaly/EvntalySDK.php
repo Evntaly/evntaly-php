@@ -16,22 +16,22 @@ class EvntalySDK
     /**
      * @var string The developer secret for authenticating API requests
      */
-    private $developerSecret;
+    private string $developerSecret;
 
     /**
      * @var string The project token for identifying the project
      */
-    private $projectToken;
+    private string $projectToken;
 
     /**
      * @var bool Flag to enable or disable event tracking
      */
-    private $trackingEnabled = true;
+    private bool $trackingEnabled = true;
 
     /**
      * @var Client Guzzle HTTP client instance
      */
-    private $client;
+    private Client $client;
 
     /**
      * Initialize the SDK with a developer secret and project token.
@@ -53,7 +53,7 @@ class EvntalySDK
     /**
      * Check if the API usage limit allows further tracking.
      *
-     * @return array|false Response data if successful, false if limit is reached or an error occurs
+     * @return array Response data
      */
     public function checkLimit() : array
     {
@@ -122,29 +122,7 @@ class EvntalySDK
         }
 
         $url = "/prod/api/v1/register/event";
-        $headers = [
-            'Content-Type' => 'application/json',
-            'secret' => $this->developerSecret,
-            'pat' => $this->projectToken,
-        ];
-
-        try {
-            $response = $this->client->post($url, [
-                'headers' => $headers,
-                'json' => $eventData
-            ]);
-
-            $responseData = json_decode($response->getBody()->getContents(), true);
-            return [
-                'success' => true,
-                'data' => $responseData
-            ];
-        } catch (Exception | GuzzleException $e) {
-            return [
-                'success' => false,
-                'error' => $e->getMessage()
-            ];
-        }
+        return $this->sendApiRequest($url, $eventData);
     }
 
     /**
@@ -156,29 +134,7 @@ class EvntalySDK
     public function identifyUser(array $userData): array
     {
         $url = "/prod/api/v1/register/user";
-        $headers = [
-            'Content-Type' => 'application/json',
-            'secret' => $this->developerSecret,
-            'pat' => $this->projectToken,
-        ];
-
-        try {
-            $response = $this->client->post($url, [
-                'headers' => $headers,
-                'json' => $userData
-            ]);
-
-            $responseData = json_decode($response->getBody()->getContents(), true);
-            return [
-                'success' => true,
-                'data' => $responseData
-            ];
-        } catch (Exception | GuzzleException $e) {
-            return [
-                'success' => false,
-                'error' => $e->getMessage()
-            ];
-        }
+        return $this->sendApiRequest($url, $userData);
     }
 
     /**
@@ -207,5 +163,37 @@ class EvntalySDK
             'success' => true,
             'message' => 'Tracking enabled'
         ];
+    }
+
+    /**
+     * @param string $url
+     * @param array $eventData
+     * @return array
+     */
+    public function sendApiRequest(string $url, array $eventData): array
+    {
+        $headers = [
+            'Content-Type' => 'application/json',
+            'secret' => $this->developerSecret,
+            'pat' => $this->projectToken,
+        ];
+
+        try {
+            $response = $this->client->post($url, [
+                'headers' => $headers,
+                'json' => $eventData
+            ]);
+
+            $responseData = json_decode($response->getBody()->getContents(), true);
+            return [
+                'success' => true,
+                'data' => $responseData
+            ];
+        } catch (Exception|GuzzleException $e) {
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
+        }
     }
 }
